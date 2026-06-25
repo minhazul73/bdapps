@@ -44,6 +44,13 @@ class GradeTrackerProvider with ChangeNotifier {
     }
   }
 
+  void insertSubject(int index, Subject subject) {
+    if (index >= 0 && index <= _subjects.length) {
+      _subjects.insert(index, subject);
+      notifyListeners();
+    }
+  }
+
   // Computed statistics (using map/where)
   int get totalSubjects => _subjects.length;
 

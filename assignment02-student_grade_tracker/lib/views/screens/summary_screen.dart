@@ -13,7 +13,7 @@ class SummaryScreen extends StatelessWidget {
       case 'B':
         return theme.colorScheme.secondary;
       case 'C':
-        return theme.colorScheme.onSurface.withOpacity(0.6);
+        return theme.colorScheme.onSurface.withValues(alpha: 0.6);
       case 'F':
       default:
         return theme.colorScheme.error;
@@ -43,7 +43,7 @@ class SummaryScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(28),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.secondary.withOpacity(0.1),
+                  color: theme.colorScheme.secondary.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -57,7 +57,7 @@ class SummaryScreen extends StatelessWidget {
                 'No Performance Data',
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onBackground,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 12),
@@ -65,7 +65,7 @@ class SummaryScreen extends StatelessWidget {
                 'Add subjects with marks to generate your performance report cards and overall average grade.',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onBackground.withOpacity(0.6),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),
               const SizedBox(height: 32),
@@ -97,7 +97,7 @@ class SummaryScreen extends StatelessWidget {
                     'Overall Performance',
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurface.withOpacity(0.8),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -112,7 +112,7 @@ class SummaryScreen extends StatelessWidget {
                         child: CircularProgressIndicator(
                           value: average / 100.0,
                           strokeWidth: 12,
-                          backgroundColor: theme.colorScheme.onSurface.withOpacity(0.1),
+                          backgroundColor: theme.colorScheme.onSurface.withValues(alpha: 0.1),
                           color: _getGradeColor(context, overallGrade),
                           strokeCap: StrokeCap.round,
                         ),
@@ -123,14 +123,14 @@ class SummaryScreen extends StatelessWidget {
                           Text(
                             overallGrade,
                             style: theme.textTheme.displayMedium?.copyWith(
-                              fontWeight: FontWeight.black,
+                              fontWeight: FontWeight.bold,
                               color: _getGradeColor(context, overallGrade),
                             ),
                           ),
                           Text(
                             'Grade',
                             style: theme.textTheme.labelMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -155,7 +155,7 @@ class SummaryScreen extends StatelessWidget {
                         : 'Passing ${passingRate.toStringAsFixed(0)}% of your courses.',
                     textAlign: TextAlign.center,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
                 ],
@@ -173,7 +173,7 @@ class SummaryScreen extends StatelessWidget {
                   title: 'Total Subjects',
                   value: '$total',
                   icon: Icons.book,
-                  cardColor: theme.colorScheme.primary.withOpacity(0.1),
+                  cardColor: theme.colorScheme.primary.withValues(alpha: 0.1),
                   iconColor: theme.colorScheme.primary,
                 ),
               ),
@@ -184,7 +184,7 @@ class SummaryScreen extends StatelessWidget {
                   title: 'Passing Rate',
                   value: '${passingRate.toStringAsFixed(0)}%',
                   icon: Icons.speed,
-                  cardColor: theme.colorScheme.secondary.withOpacity(0.1),
+                  cardColor: theme.colorScheme.secondary.withValues(alpha: 0.1),
                   iconColor: theme.colorScheme.secondary,
                 ),
               ),
@@ -199,7 +199,7 @@ class SummaryScreen extends StatelessWidget {
                   title: 'Passing',
                   value: '$passing',
                   icon: Icons.check_circle_outline,
-                  cardColor: theme.colorScheme.primary.withOpacity(0.1),
+                  cardColor: theme.colorScheme.primary.withValues(alpha: 0.1),
                   iconColor: theme.colorScheme.primary,
                 ),
               ),
@@ -210,7 +210,7 @@ class SummaryScreen extends StatelessWidget {
                   title: 'Failing',
                   value: '$failing',
                   icon: Icons.error_outline,
-                  cardColor: theme.colorScheme.error.withOpacity(0.1),
+                  cardColor: theme.colorScheme.error.withValues(alpha: 0.1),
                   iconColor: theme.colorScheme.error,
                 ),
               ),
@@ -237,12 +237,12 @@ class SummaryScreen extends StatelessWidget {
         color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(16),
         border: theme.cardTheme.shape is RoundedRectangleBorder
-            ? (theme.cardTheme.shape as RoundedRectangleBorder).side
-            : Border.all(color: theme.colorScheme.onSurface.withOpacity(0.08)),
+            ? Border.fromBorderSide((theme.cardTheme.shape as RoundedRectangleBorder).side)
+            : Border.all(color: theme.colorScheme.onSurface.withValues(alpha: 0.08)),
         boxShadow: theme.cardTheme.elevation != null && theme.cardTheme.elevation! > 0
             ? [
                 BoxShadow(
-                  color: theme.shadowColor.withOpacity(0.04),
+                  color: theme.shadowColor.withValues(alpha: 0.04),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 )
@@ -281,7 +281,7 @@ class SummaryScreen extends StatelessWidget {
           Text(
             title,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.6),
+              color: theme.colorScheme.onSurface.withValues(alpha:0.6),
             ),
           ),
         ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../controllers/grade_tracker_provider.dart';
-import '../../models/subject.dart';
 
 class SubjectListScreen extends StatelessWidget {
   const SubjectListScreen({super.key});
@@ -14,7 +13,7 @@ class SubjectListScreen extends StatelessWidget {
       case 'B':
         return theme.colorScheme.secondary;
       case 'C':
-        return theme.colorScheme.onSurface.withOpacity(0.6);
+        return theme.colorScheme.onSurface.withValues(alpha: 0.6);
       case 'F':
       default:
         return theme.colorScheme.error;
@@ -52,7 +51,7 @@ class SubjectListScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(28),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withOpacity(0.1),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -66,7 +65,7 @@ class SubjectListScreen extends StatelessWidget {
                 'No Subjects Added Yet',
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onBackground,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 12),
@@ -74,7 +73,7 @@ class SubjectListScreen extends StatelessWidget {
                 'Your recorded subjects and grades will appear here. Add a new subject to start tracking.',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onBackground.withOpacity(0.6),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),
               const SizedBox(height: 32),
@@ -103,13 +102,13 @@ class SubjectListScreen extends StatelessWidget {
                 'Recorded Subjects',
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onBackground,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withOpacity(0.1),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
@@ -169,11 +168,11 @@ class SubjectListScreen extends StatelessWidget {
                   provider.deleteSubject(index);
 
                   // Show SnackBar with Undo action
-                  ScaffoldMessenger.of(context).clearSnacks();
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('${deletedSubject.name} deleted'),
-                      backgroundColor: theme.colorScheme.onBackground,
+                      backgroundColor: theme.colorScheme.onSurface,
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -198,7 +197,7 @@ class SubjectListScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.primary.withOpacity(0.1),
+                            color: theme.colorScheme.primary.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(
@@ -224,7 +223,7 @@ class SubjectListScreen extends StatelessWidget {
                               Text(
                                 'Mark: ${subject.mark.toStringAsFixed(subject.mark % 1 == 0 ? 0 : 1)}%',
                                 style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                                 ),
                               ),
                             ],
@@ -241,7 +240,7 @@ class SubjectListScreen extends StatelessWidget {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: _getGradeColor(context, subject.grade).withOpacity(0.3),
+                                color: _getGradeColor(context, subject.grade).withValues(alpha: 0.3),
                                 blurRadius: 6,
                                 offset: const Offset(0, 3),
                               ),
