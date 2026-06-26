@@ -1,37 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../controllers/grade_tracker_provider.dart';
+import '../themes/app_themes.dart';
 
 class SubjectListScreen extends StatelessWidget {
   const SubjectListScreen({super.key});
 
   Color _getGradeColor(BuildContext context, String grade) {
-    final theme = Theme.of(context);
+    final gradeColors = Theme.of(context).gradeColors;
     switch (grade) {
       case 'A':
-        return theme.colorScheme.primary;
+        return gradeColors.gradeA;
       case 'B':
-        return theme.colorScheme.secondary;
+        return gradeColors.gradeB;
       case 'C':
-        return theme.colorScheme.onSurface.withValues(alpha: 0.6);
+        return gradeColors.gradeC;
       case 'F':
       default:
-        return theme.colorScheme.error;
+        return gradeColors.gradeF;
     }
   }
 
   Color _getGradeTextColor(BuildContext context, String grade) {
-    final theme = Theme.of(context);
+    final gradeColors = Theme.of(context).gradeColors;
     switch (grade) {
       case 'A':
-        return theme.colorScheme.onPrimary;
+        return gradeColors.onGradeA;
       case 'B':
-        return theme.colorScheme.onSecondary;
+        return gradeColors.onGradeB;
       case 'C':
-        return theme.colorScheme.surface;
+        return gradeColors.onGradeC;
       case 'F':
       default:
-        return theme.colorScheme.onError;
+        return gradeColors.onGradeF;
     }
   }
 
@@ -83,6 +84,11 @@ class SubjectListScreen extends StatelessWidget {
                 },
                 icon: const Icon(Icons.add_circle_outline),
                 label: const Text('Add Your First Subject'),
+                style: ButtonStyle(
+                  padding: WidgetStatePropertyAll(
+                    EdgeInsetsGeometry.symmetric(horizontal: 16),
+                  ),
+                ),
               ),
             ],
           ),
@@ -106,7 +112,10 @@ class SubjectListScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
@@ -130,7 +139,9 @@ class SubjectListScreen extends StatelessWidget {
               final subject = subjects[index];
 
               return Dismissible(
-                key: ValueKey(subject), // Safe distinct key using the model instance reference
+                key: ValueKey(
+                  subject,
+                ), // Safe distinct key using the model instance reference
                 direction: DismissDirection.endToStart,
                 background: Container(
                   margin: const EdgeInsets.symmetric(vertical: 8),
@@ -152,10 +163,7 @@ class SubjectListScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Icon(
-                        Icons.delete,
-                        color: theme.colorScheme.onError,
-                      ),
+                      Icon(Icons.delete, color: theme.colorScheme.onError),
                     ],
                   ),
                 ),
@@ -189,72 +197,160 @@ class SubjectListScreen extends StatelessWidget {
                 },
                 child: Card(
                   margin: const EdgeInsets.symmetric(vertical: 8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      children: [
-                        // Subject Icon
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            Icons.book_outlined,
-                            color: theme.colorScheme.primary,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-
-                        // Subject Details
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                subject.name,
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: theme.colorScheme.onSurface,
-                                ),
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    onTap: () {}, // Add a subtle ripple effect
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Subject Icon
+                          Container(
+                            padding: const EdgeInsets.all(14),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primary.withValues(
+                                alpha: 0.1,
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Mark: ${subject.mark.toStringAsFixed(subject.mark % 1 == 0 ? 0 : 1)}%',
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Grade Badge
-                        Container(
-                          width: 44,
-                          height: 44,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: _getGradeColor(context, subject.grade),
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: _getGradeColor(context, subject.grade).withValues(alpha: 0.3),
-                                blurRadius: 6,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Text(
-                            subject.grade,
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              color: _getGradeTextColor(context, subject.grade),
-                              fontWeight: FontWeight.bold,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Icon(
+                              Icons.auto_stories_rounded,
+                              color: theme.colorScheme.primary,
+                              size: 28,
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 16),
+
+                          // Subject Details & Progress
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  subject.name,
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colorScheme.onSurface,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Stack(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              4,
+                                            ),
+                                            child: LinearProgressIndicator(
+                                              value: subject.mark / 100.0,
+                                              minHeight: 6,
+                                              backgroundColor: theme
+                                                  .colorScheme
+                                                  .onSurface
+                                                  .withValues(alpha: 0.1),
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                    _getGradeColor(
+                                                      context,
+                                                      subject.grade,
+                                                    ),
+                                                  ),
+                                            ),
+                                          ),
+                                          // Markers for grades: C (50%), B (65%), A (80%)
+                                          Positioned.fill(
+                                            child: Row(
+                                              children: [
+                                                const Spacer(flex: 50),
+                                                Container(
+                                                  width: 2,
+                                                  color:
+                                                      theme.colorScheme.surface,
+                                                ),
+                                                const Spacer(flex: 15),
+                                                Container(
+                                                  width: 2,
+                                                  color:
+                                                      theme.colorScheme.surface,
+                                                ),
+                                                const Spacer(flex: 15),
+                                                Container(
+                                                  width: 2,
+                                                  color:
+                                                      theme.colorScheme.surface,
+                                                ),
+                                                const Spacer(flex: 20),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Text(
+                                      '${subject.mark.toStringAsFixed(subject.mark % 1 == 0 ? 0 : 1)}%',
+                                      style: theme.textTheme.labelLarge
+                                          ?.copyWith(
+                                            color: theme.colorScheme.onSurface
+                                                .withValues(alpha: 0.7),
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+
+                          // Grade Badge
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            decoration: BoxDecoration(
+                              color: _getGradeColor(
+                                context,
+                                subject.grade,
+                              ).withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'GRADE',
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    color: _getGradeColor(
+                                      context,
+                                      subject.grade,
+                                    ),
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: 0.5,
+                                    fontSize: 8,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  subject.grade,
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    color: _getGradeColor(
+                                      context,
+                                      subject.grade,
+                                    ),
+                                    fontWeight: FontWeight.w900,
+                                    height: 1.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

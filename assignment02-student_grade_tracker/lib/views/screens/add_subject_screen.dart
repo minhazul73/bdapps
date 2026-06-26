@@ -89,7 +89,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: theme.colorScheme.primary.withOpacity(0.3),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
                   blurRadius: 12,
                   offset: const Offset(0, 6),
                 ),
@@ -115,7 +115,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                 Text(
                   'Add a subject and its mark to track your academic performance and calculate grades automatically.',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onPrimary.withOpacity(0.85),
+                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
                   ),
                 ),
               ],
