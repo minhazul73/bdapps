@@ -21,21 +21,6 @@ class SubjectListScreen extends StatelessWidget {
     }
   }
 
-  Color _getGradeTextColor(BuildContext context, String grade) {
-    final gradeColors = Theme.of(context).gradeColors;
-    switch (grade) {
-      case 'A':
-        return gradeColors.onGradeA;
-      case 'B':
-        return gradeColors.onGradeB;
-      case 'C':
-        return gradeColors.onGradeC;
-      case 'F':
-      default:
-        return gradeColors.onGradeF;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<GradeTrackerProvider>();
@@ -171,10 +156,10 @@ class SubjectListScreen extends StatelessWidget {
                   // Keep a reference to the subject for the undo action
                   final deletedSubject = subject;
                   final deletedIndex = index;
-
+              
                   // Remove from Provider state
                   provider.deleteSubject(index);
-
+              
                   // Show SnackBar with Undo action
                   ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -189,7 +174,10 @@ class SubjectListScreen extends StatelessWidget {
                         label: 'UNDO',
                         textColor: theme.colorScheme.primary,
                         onPressed: () {
-                          provider.insertSubject(deletedIndex, deletedSubject);
+                          provider.insertSubject(
+                            deletedIndex,
+                            deletedSubject,
+                          );
                         },
                       ),
                     ),
@@ -221,7 +209,7 @@ class SubjectListScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 16),
-
+              
                           // Subject Details & Progress
                           Expanded(
                             child: Column(
@@ -229,10 +217,11 @@ class SubjectListScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   subject.name,
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.colorScheme.onSurface,
-                                  ),
+                                  style: theme.textTheme.titleMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: theme.colorScheme.onSurface,
+                                      ),
                                 ),
                                 const SizedBox(height: 6),
                                 Row(
@@ -241,9 +230,8 @@ class SubjectListScreen extends StatelessWidget {
                                       child: Stack(
                                         children: [
                                           ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              4,
-                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
                                             child: LinearProgressIndicator(
                                               value: subject.mark / 100.0,
                                               minHeight: 6,
@@ -252,7 +240,9 @@ class SubjectListScreen extends StatelessWidget {
                                                   .onSurface
                                                   .withValues(alpha: 0.1),
                                               valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
+                                                  AlwaysStoppedAnimation<
+                                                    Color
+                                                  >(
                                                     _getGradeColor(
                                                       context,
                                                       subject.grade,
@@ -267,20 +257,23 @@ class SubjectListScreen extends StatelessWidget {
                                                 const Spacer(flex: 50),
                                                 Container(
                                                   width: 2,
-                                                  color:
-                                                      theme.colorScheme.surface,
+                                                  color: theme
+                                                      .colorScheme
+                                                      .surface,
                                                 ),
                                                 const Spacer(flex: 15),
                                                 Container(
                                                   width: 2,
-                                                  color:
-                                                      theme.colorScheme.surface,
+                                                  color: theme
+                                                      .colorScheme
+                                                      .surface,
                                                 ),
                                                 const Spacer(flex: 15),
                                                 Container(
                                                   width: 2,
-                                                  color:
-                                                      theme.colorScheme.surface,
+                                                  color: theme
+                                                      .colorScheme
+                                                      .surface,
                                                 ),
                                                 const Spacer(flex: 20),
                                               ],
@@ -305,7 +298,7 @@ class SubjectListScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 16),
-
+              
                           // Grade Badge
                           Container(
                             padding: const EdgeInsets.symmetric(

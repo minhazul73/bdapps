@@ -1,15 +1,51 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/subject.dart';
 
 class GradeTrackerProvider with ChangeNotifier {
   // Subjects list
-  final List<Subject> _subjects = [];
+  List<Subject> _subjects = [];
 
   // Active navigation tab index (Add: 0, List: 1, Summary: 2)
   int _currentIndex = 0;
 
   // Active theme mode
   ThemeMode _themeMode = ThemeMode.light;
+
+  GradeTrackerProvider() {
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    
+    // Load theme
+    final isDark = prefs.getBool('isDarkMode');
+    if (isDark != null) {
+      _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+    }
+
+    // Load subjects
+    final subjectsJson = prefs.getString('subjects');
+    if (subjectsJson != null) {
+      final List<dynamic> decodedList = jsonDecode(subjectsJson);
+      _subjects = decodedList.map((item) => Subject.fromJson(item as Map<String, dynamic>)).toList();
+    }
+    
+    notifyListeners();
+  }
+
+  Future<void> _saveSubjects() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String encodedList = jsonEncode(_subjects.map((s) => s.toJson()).toList());
+    await prefs.setString('subjects', encodedList);
+  }
+
+  Future<void> _saveTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDarkMode', isDarkMode);
+  }
 
   // Getters
   List<Subject> get subjects => List.unmodifiable(_subjects);
@@ -28,18 +64,21 @@ class GradeTrackerProvider with ChangeNotifier {
   // Theme toggle controller
   void toggleTheme() {
     _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    _saveTheme();
     notifyListeners();
   }
 
   // Subject operations
   void addSubject(String name, double mark) {
     _subjects.add(Subject(name, mark));
+    _saveSubjects();
     notifyListeners();
   }
 
   void deleteSubject(int index) {
     if (index >= 0 && index < _subjects.length) {
       _subjects.removeAt(index);
+      _saveSubjects();
       notifyListeners();
     }
   }
@@ -47,6 +86,7 @@ class GradeTrackerProvider with ChangeNotifier {
   void insertSubject(int index, Subject subject) {
     if (index >= 0 && index <= _subjects.length) {
       _subjects.insert(index, subject);
+      _saveSubjects();
       notifyListeners();
     }
   }

@@ -85,6 +85,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
+                stops: [0.75, 1],
               ),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
@@ -164,7 +165,9 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                     // Mark Field
                     TextFormField(
                       controller: _markController,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       decoration: const InputDecoration(
                         labelText: 'Mark Obtanied',
                         hintText: 'e.g., 85, 92.5',

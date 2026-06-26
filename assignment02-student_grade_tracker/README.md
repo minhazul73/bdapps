@@ -9,6 +9,7 @@ A premium, modern Flutter application built to track student course grades, calc
 *   **Performance Dashboard (Summary)**: Shows real-time statistics including total subjects, average mark, passing rate, and overall letter grade.
 *   **Dynamic Theme Toggle**: Instantly switch between custom dark and light themes. No default themes are used; all colors are resolved dynamically from `Theme.of(context)`.
 *   **Reactive State Management**: Uses the `provider` package to manage the entire application state with **zero `setState` calls** across the codebase.
+*   **Persistent Local Storage**: Uses `shared_preferences` to automatically save and restore all subject data and the selected theme across app restarts.
 
 ---
 
@@ -28,6 +29,11 @@ The application adheres strictly to the Model-View-Controller pattern, leveragin
     *   Uses `.where()` to filter passing and failing subjects.
     *   Uses `.map()` to extract scores and compute the average mark dynamically.
     *   Manages operations like `addSubject`, `deleteSubject`, `insertSubject` (Undo), `setCurrentIndex`, and `toggleTheme`.
+    *   **SharedPreferences Integration**:
+        *   `_loadData()` — called in the constructor; reads persisted data on every app launch.
+        *   `_saveSubjects()` — serialises the `_subjects` list to a JSON string and writes it under the key `'subjects'`.
+        *   `_saveTheme()` — persists the current theme preference as a boolean under the key `'isDarkMode'`.
+        *   Every mutating operation (`addSubject`, `deleteSubject`, `insertSubject`, `toggleTheme`) triggers the corresponding save method so the app state is never lost.
 3.  **View (`lib/views/`)**
     *   `themes/app_themes.dart`: Configures premium slate/teal/violet custom themes (Light and Dark) with high-contrast text, custom text field borders, and cards.
     *   `screens/main_navigation_screen.dart`: The frame containing the App Bar, Bottom Navigation Bar, and Theme toggle.
@@ -54,7 +60,7 @@ flutter doctor
     ```
 
 2.  **Get packages**:
-    Ensure the `provider` dependency is fetched:
+    Fetch all dependencies, including `provider` and `shared_preferences`:
     ```bash
     flutter pub get
     ```
